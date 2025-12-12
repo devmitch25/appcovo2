@@ -1,0 +1,32 @@
+-- CREATE TABLE IF NOT EXISTS Game (
+--                                     id BIGINT PRIMARY KEY,
+--                                     image VARCHAR(255),
+--                                     name VARCHAR(255)
+-- );
+--
+-- INSERT INTO Game (id, image, name)
+-- VALUES (1, 'Suca','Ciao')
+-- ON CONFLICT (id) DO NOTHING;
+--
+-- CREATE TABLE IF NOT EXISTS Admin (
+--                                      id BIGINT PRIMARY KEY,
+--                                      email VARCHAR(255) UNIQUE,
+--                                      image VARCHAR(255),
+--                                      keycloak_id VARCHAR(255) UNIQUE,
+--                                      password VARCHAR(255),
+--                                      phone_number VARCHAR(50)
+-- );
+--
+--
+-- INSERT INTO Admin (id, email, image, keycloak_id, password, phone_number)
+-- VALUES (
+--            1,
+--            'primoadmincovo',
+--            NULL,
+--            '95ad5d15-60a1-4c19-887e-be91c56d6e61',
+--            'qwerty',
+--            NULL
+--        )
+-- ON CONFLICT (id) DO NOTHING;
+
+

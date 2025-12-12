@@ -1,0 +1,63 @@
+version: '3.8'
+
+services:
+  # 1. Servizio PostgreSQL (DB per il tuo Backend)
+  db:
+    image: postgres:15-alpine
+    container_name: postgres_be_db
+    restart: always
+    environment:
+      # Credenziali per il DB del Backend
+      POSTGRES_DB: db-appcovo
+      POSTGRES_USER: mik
+      POSTGRES_PASSWORD: pass
+      # Puoi creare anche un utente e un DB separati per Keycloak se cambiassi idea in futuro
+      # POSTGRES_USER: keycloak_user
+      # POSTGRES_PASSWORD: keycloak_password
+    volumes:
+      # Persistenza dei dati del DB del Backend
+      - postgres_data:/var/lib/postgresql/data
+      - ./db-init:/docker-entrypoint-initdb.d
+    networks:
+      - app-net
+    ports:
+      # Mappa la porta interna 5432 del container a 9999 sull'host
+      - "9999:5432"
+
+  # 2. Servizio Keycloak (usa DB interno H2 per lo sviluppo)
+  keycloak:
+    # Usa 'build' invece di 'image' perché ho usato un Dockerfile
+    build:
+      context: ./keycloak-custom
+      dockerfile: Dockerfile
+    container_name: keycloak
+    restart: always
+    environment:
+      # Amministratore della console di Keycloak
+      KEYCLOAK_ADMIN: admin
+      KEYCLOAK_ADMIN_PASSWORD: admin
+
+      # Variabile che dice a Keycloak di importare il file JSON
+      KC_IMPORT_REALMS: /opt/keycloak/data/import/appCovo-realm-export.json
+
+      # NOTA: Qui MANCANO le variabili KC_DB, KC_DB_URL, ecc.
+      # Keycloak utilizzerà il suo database H2 predefinito (ideale per lo sviluppo/test).
+
+      # Configurazioni per renderlo accessibile dal tuo backend sull'host
+      KC_HOSTNAME: localhost
+      KC_HTTP_ENABLED: true
+      KC_HEALTH_ENABLED: true
+    command: start-dev # Avvio in modalità sviluppo
+    ports:
+      - "8080:8080" # Porta di Keycloak (ESPOSTA ALL'ESTERNO)
+    networks:
+      - app-net
+
+# Volumi per la persistenza dei dati
+volumes:
+  postgres_data:
+
+# Rete per la comunicazione tra i servizi
+networks:
+  app-net:
+    driver: bridge
