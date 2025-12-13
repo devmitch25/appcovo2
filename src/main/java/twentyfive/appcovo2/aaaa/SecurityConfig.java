@@ -21,15 +21,18 @@ import java.util.stream.Collectors;
 @EnableMethodSecurity // Abilita la sicurezza basata su annotazioni (@PreAuthorize)
 public class SecurityConfig {
 
+
     @Bean
     public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
         http
                 .csrf(csrf -> csrf.disable()) // Disabilita CSRF (tipico per API stateless)
                 .authorizeHttpRequests(auth -> auth
                         // Esempio: tutti possono accedere a /public
-                        .requestMatchers("/openapi/register").permitAll()
+                        .requestMatchers("/openapi/register", "/openapi/token").permitAll()
+                        .requestMatchers("/openapi/prova").hasRole("PLAYER")
+                        .requestMatchers("/api/admin/**").hasRole("ADMIN")
                         // Tutte le altre richieste richiedono l'autenticazione OAuth2
-                        .anyRequest().authenticated()
+                        .anyRequest().authenticated() //TODO non dovrei mettere DENYALL ?
                 )
                 .oauth2ResourceServer(oauth2 -> oauth2
                         .jwt(jwt -> jwt.jwtAuthenticationConverter(jwtAuthenticationConverter()))

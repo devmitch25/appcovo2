@@ -7,6 +7,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 import twentyfive.appcovo2.exceptions.TokenRetrievalException;
+import twentyfive.appcovo2.requests.LoginRequest;
 import twentyfive.appcovo2.requests.TokenRequest;
 import twentyfive.appcovo2.response.LoginRes;
 
@@ -41,24 +42,18 @@ public class KeycloakService {
         if (access == null || access.isBlank()) {
             throw new TokenRetrievalException("Unable to retrieve admin access token from Keycloak");
         }
-
         return "Bearer " + access;
     }
 
     public Response addNewUser(UserRepresentation user) {
         String accessToken = getAdminBearerToken();
-        return keycloakApi.add(accessToken, realm, user);
+        return keycloakApi.add(accessToken, this.realm, user);
     }
 
     public Set<String> getAllRealmRoleNames() {
-        // 1. Ottiene il token admin
         String adminToken = getAdminBearerToken();
 
-        // 2. Chiama l'API per tutti i ruoli
-        List<RoleRepresentation> roles = keycloakApi.getAllRealmRoles(
-                adminToken,
-                this.realm // Il realm iniettato tramite @Value
-        );
+        List<RoleRepresentation> roles = keycloakApi.getAllRealmRoles( adminToken, this.realm );
 
         // 3. Converte gli oggetti RoleRepresentation in semplici nomi (String)
         return roles.stream()
@@ -67,27 +62,20 @@ public class KeycloakService {
     }
 
     public void assignRealmRoleToUser(String userId, String roleName) {
-        // 1. Ottiene il token admin
         String adminToken = getAdminBearerToken();
-
-        // 2. Recupera l'oggetto RoleRepresentation per il nome
-        RoleRepresentation roleObject = keycloakApi.getRealmRoleByName(
-                adminToken,
-                this.realm,
-                roleName
-        );
-
-        // 3. Esegue la POST con la lista del ruolo
+        RoleRepresentation roleObject = keycloakApi.getRealmRoleByName(adminToken, this.realm, roleName );
         List<RoleRepresentation> rolesToAssign = Collections.singletonList(roleObject);
-
-        keycloakApi.addRealmRolesToUser(
-                adminToken,
-                this.realm,
-                userId,
-                rolesToAssign
-        );
+        keycloakApi.addRealmRolesToUser(adminToken, this.realm, userId, rolesToAssign);
     }
 
 
-
+    public String getTokenLogin(LoginRequest loginRequest) {
+        TokenRequest tokenRequest = new TokenRequest(client_id, client_secret, grant_type, loginRequest.getUsername(), loginRequest.getPassword());
+        LoginRes res = keycloakApi.getToken(tokenRequest, realm);
+        String access = res != null ? res.getAccessToken() : null;
+        if (access == null || access.isBlank()) {
+            throw new TokenRetrievalException("Unable to retrieve admin access token from Keycloak");
+        }
+        return "Bearer " + access;
+    }
 }
