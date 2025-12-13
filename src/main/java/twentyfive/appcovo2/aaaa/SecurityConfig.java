@@ -32,7 +32,7 @@ public class SecurityConfig {
                         .requestMatchers("/openapi/prova").hasRole("PLAYER")
                         .requestMatchers("/api/admin/**").hasRole("ADMIN")
                         // Tutte le altre richieste richiedono l'autenticazione OAuth2
-                        .anyRequest().authenticated() //TODO non dovrei mettere DENYALL ?
+                        .anyRequest().authenticated() //TODO non dovrei mettere DENYALL ????
                 )
                 .oauth2ResourceServer(oauth2 -> oauth2
                         .jwt(jwt -> jwt.jwtAuthenticationConverter(jwtAuthenticationConverter()))
