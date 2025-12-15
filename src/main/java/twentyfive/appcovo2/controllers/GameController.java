@@ -11,7 +11,7 @@ import java.util.List;
 import java.util.Optional;
 
 @RestController
-@RequestMapping("/games")
+@RequestMapping("/test/games")
 public class GameController {
 
     @Autowired

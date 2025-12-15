@@ -12,7 +12,7 @@ import java.util.List;
 import java.util.Optional;
 
 @RestController
-@RequestMapping("/trofei")
+@RequestMapping("/test/trofei")
 public class PlayerTrophiesRelController {
 
     @Autowired

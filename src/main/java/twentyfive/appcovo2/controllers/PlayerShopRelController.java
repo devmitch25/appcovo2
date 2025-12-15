@@ -13,7 +13,7 @@ import java.util.List;
 import java.util.Optional;
 
 @RestController
-@RequestMapping("/follow")
+@RequestMapping("/test/follow")
 public class PlayerShopRelController {
 
     @Autowired

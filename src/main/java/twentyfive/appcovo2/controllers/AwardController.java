@@ -11,7 +11,7 @@ import java.util.List;
 import java.util.Optional;
 
 @RestController
-@RequestMapping("/awards")
+@RequestMapping("/test/awards")
 public class AwardController {
 
     @Autowired

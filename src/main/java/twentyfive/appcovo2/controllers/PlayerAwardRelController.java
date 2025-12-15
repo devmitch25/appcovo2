@@ -11,7 +11,7 @@ import java.util.List;
 import java.util.Optional;
 
 @RestController
-@RequestMapping("/cronologiaPremi")
+@RequestMapping("/test/cronologiaPremi")
 public class PlayerAwardRelController {
 
     @Autowired

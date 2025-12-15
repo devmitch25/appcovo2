@@ -3,6 +3,7 @@ package twentyfive.appcovo2.apiGateway;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 import twentyfive.appcovo2.requests.LoginRequest;
 import twentyfive.appcovo2.requests.RegistrationRequest;
@@ -27,6 +28,7 @@ public class FeRequestController {
     }
 
     @GetMapping("/prova")
+    @PreAuthorize("hasRole('PLAYER')")
     public ResponseEntity<String> getProva() {
         return new ResponseEntity<>("sciao belo", HttpStatus.FOUND);
     }

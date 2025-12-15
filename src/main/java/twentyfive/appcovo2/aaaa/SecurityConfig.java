@@ -29,10 +29,10 @@ public class SecurityConfig {
                 .authorizeHttpRequests(auth -> auth
                         // Esempio: tutti possono accedere a /public
                         .requestMatchers("/openapi/register", "/openapi/token").permitAll()
-                        .requestMatchers("/openapi/prova").hasRole("PLAYER")
-                        .requestMatchers("/api/admin/**").hasRole("ADMIN")
+
+                        .requestMatchers("/test/**").denyAll()
                         // Tutte le altre richieste richiedono l'autenticazione OAuth2
-                        .anyRequest().authenticated() //TODO non dovrei mettere DENYALL ????
+                        .anyRequest().authenticated()
                 )
                 .oauth2ResourceServer(oauth2 -> oauth2
                         .jwt(jwt -> jwt.jwtAuthenticationConverter(jwtAuthenticationConverter()))
