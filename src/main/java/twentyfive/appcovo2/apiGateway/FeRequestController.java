@@ -5,6 +5,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
+import twentyfive.appcovo2.client.KeycloakService;
 import twentyfive.appcovo2.requests.LoginRequest;
 import twentyfive.appcovo2.requests.RegistrationRequest;
 
@@ -14,6 +15,8 @@ public class FeRequestController {
 
     @Autowired
     private FeRequestService feRequestService;
+    @Autowired
+    private KeycloakService keycloakService;
 
     @PostMapping("/register")
     public ResponseEntity<Void> registerPlayer(@RequestBody RegistrationRequest registrationRequest) {
@@ -38,6 +41,16 @@ public class FeRequestController {
     public ResponseEntity<Void> saveShop(@RequestBody RegistrationRequest registrationRequest) {
         feRequestService.registerShop(registrationRequest);
         return ResponseEntity.noContent().build();
+    }
+
+    @PutMapping("/reset-password")
+    public ResponseEntity<Object> resetPasswordFromEmail(@RequestParam String email){
+        try {
+            keycloakService.resetPasswordFromEmail(email);
+            return ResponseEntity.ok("Email Reset Password Sent!");
+        } catch (Exception e) {
+            return ResponseEntity.badRequest().body("Failed to send reset password email for: "+email);
+        }
     }
 
 }

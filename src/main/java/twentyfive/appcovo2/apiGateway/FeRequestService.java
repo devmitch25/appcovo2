@@ -25,12 +25,13 @@ public class FeRequestService {
     @Autowired
     private ShopService shopService;
 
-    public void registerPlayer(RegistrationRequest request) {
+    private UserRepresentation createUser(RegistrationRequest request) {
         // 1. CREAZIONE UTENTE SU KEYCLOAK
         UserRepresentation user = new UserRepresentation();
         user.setEnabled(true);
         user.setUsername(request.getUsername());
         user.setEmail(request.getEmail());
+        //CHE DELLE VARIABILI SIANO VUOTE O NULLE A KEYCLOAK NON GLIELE FREGA UN CAZZO. OVVIAMENTE NEL DB "" NON VIENE SALVATO COME NULL
         user.setFirstName(request.getFirstName());
         user.setLastName(request.getLastName());
         user.setEmailVerified(true); //TODO
@@ -41,6 +42,12 @@ public class FeRequestService {
         credential.setValue(request.getPassword());
         credential.setTemporary(false); // La password non scadrà al primo login
         user.setCredentials(Collections.singletonList(credential));
+
+        return user;
+    }
+
+    public void registerPlayer(RegistrationRequest request) {
+        UserRepresentation user = createUser(request);
 
         Response response = keycloakService.addNewUser(user);
 
@@ -78,22 +85,7 @@ public class FeRequestService {
     }
 
     public void registerShop(RegistrationRequest request) {
-        // 1. CREAZIONE UTENTE SU KEYCLOAK
-        UserRepresentation user = new UserRepresentation();
-        user.setEnabled(true);
-        user.setUsername(request.getUsername());
-        user.setEmail(request.getEmail());
-        //CHE DELLE VARIABILI SIANO VUOTE O NULLE A KEYCLOAK NON GLIELE FREGA UN CAZZO. OVVIAMENTE NEL DB "" NON VIENE SALVATO COME NULL
-        user.setFirstName(request.getFirstName());
-        user.setLastName(request.getLastName());
-        user.setEmailVerified(true); //TODO
-
-        // Imposta la password
-        CredentialRepresentation credential = new CredentialRepresentation();
-        credential.setType(CredentialRepresentation.PASSWORD);
-        credential.setValue(request.getPassword());
-        credential.setTemporary(false); // La password non scadrà al primo login
-        user.setCredentials(Collections.singletonList(credential));
+        UserRepresentation user = createUser(request);
 
         Response response = keycloakService.addNewUser(user);
 

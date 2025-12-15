@@ -1,4 +1,4 @@
-package twentyfive.appcovo2.aaaa;
+package twentyfive.appcovo2.config;
 
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -27,8 +27,8 @@ public class SecurityConfig {
         http
                 .csrf(csrf -> csrf.disable()) // Disabilita CSRF (tipico per API stateless)
                 .authorizeHttpRequests(auth -> auth
-                        // Esempio: tutti possono accedere a /public
-                        .requestMatchers("/openapi/register", "/openapi/token").permitAll()
+
+                        .requestMatchers("/api/register", "/api/token").permitAll()
 
                         .requestMatchers("/test/**").denyAll()
                         // Tutte le altre richieste richiedono l'autenticazione OAuth2

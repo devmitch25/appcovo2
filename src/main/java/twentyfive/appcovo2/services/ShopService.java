@@ -18,6 +18,8 @@ public class ShopService {
         return shopRepository.findById(id);
     }
 
+    public Optional<Shop> getByEmail(String email) { return shopRepository.findByEmail(email); }
+
     public List<Shop> getAll(){
         return shopRepository.findAll();
     }
@@ -44,4 +46,5 @@ public class ShopService {
         //TODO QUANDO VIENE CANCELLATO, VA ELIMINATO ANCHE DAL RESTO DELLE TABELLE RELAZIONALI
         //TODO QUALI PLAYER-SHOP
     }
+
 }

@@ -19,6 +19,11 @@ public class Shop {
     @Column(name = "keycloak_id", unique = true, nullable = false)
     private String keycloakId;
 
+    @Column(unique = true)
+    private String username;
+    @Column(unique = true)
+    private String email;
+
     private final String name = "Covo del Nerd"; //TODO giusto?
     private String city; //TODO vincolo UNIQUE o la facciamo diventare entità con rel OneToOne?
     private String address;

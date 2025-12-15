@@ -44,6 +44,16 @@ public interface KeycloakApi {
             @RequestBody List<RoleRepresentation> roles
     );
 
+    @PutMapping(value = "/admin/realms/{realm}/users/{userId}/execute-actions-email",
+            produces = "application/json")
+    ResponseEntity<Object> executeAction(@RequestHeader("Authorization") String accessToken,
+                                         @PathVariable("realm") String realm,
+                                         @PathVariable("userId") String userId,
+                                         @RequestBody List<String> actions,
+                                         @RequestParam("redirect_uri") String redirectUri,
+                                         @RequestParam("client_id") String clientId
+    );
+
 
 
     /*
