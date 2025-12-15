@@ -30,7 +30,7 @@ public class SecurityConfig {
                 .csrf(csrf -> csrf.disable()) // Disabilita CSRF (tipico per API stateless)
                 .authorizeHttpRequests(auth -> auth
 
-                        .requestMatchers("/keycloak/register", "/keycloak/login", "/keycloak/egg").permitAll()
+                        .requestMatchers("/keycloak/register", "/keycloak/login", "/keycloak/reset-password").permitAll()
 
                         .requestMatchers("/test/**").denyAll()
                         // Tutte le altre richieste richiedono l'autenticazione OAuth2

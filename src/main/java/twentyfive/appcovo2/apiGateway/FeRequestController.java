@@ -46,18 +46,22 @@ public class FeRequestController extends BaseController {
 
     @PostMapping("/saveShop")
     @PreAuthorize("hasRole('ADMIN')")
-    public ResponseEntity<Void> saveShop(@RequestBody RegistrationRequest registrationRequest) {
+    public ResponseEntity<ResponseWrapper<Void>> saveShop(@RequestBody RegistrationRequest registrationRequest) {
         feRequestService.registerShop(registrationRequest);
         return ResponseEntity.noContent().build();
     }
 
     @PutMapping("/reset-password")
-    public ResponseEntity<Object> resetPasswordFromEmail(@RequestParam String email){
+    public ResponseEntity<ResponseWrapper<Void>> resetPasswordFromEmail(@RequestParam String email){
         try {
             keycloakService.resetPasswordFromEmail(email);
-            return ResponseEntity.ok("Email Reset Password Sent!");
+            return ok(null,"Email Reset Password Sent!");
         } catch (Exception e) {
-            return ResponseEntity.badRequest().body("Failed to send reset password email for: "+email);
+            ResponseWrapper<Void> wrapper = new ResponseWrapper<>();
+            wrapper.setStatusCode(400);
+            wrapper.setMessage("Failed to send reset password email: " + e.getMessage());
+            wrapper.setSuccess(false);
+            return ResponseEntity.badRequest().body(wrapper);
         }
     }
 
