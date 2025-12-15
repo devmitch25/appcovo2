@@ -6,12 +6,15 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 import twentyfive.appcovo2.client.KeycloakService;
+import twentyfive.appcovo2.dtos.BaseController;
 import twentyfive.appcovo2.requests.LoginRequest;
 import twentyfive.appcovo2.requests.RegistrationRequest;
+import twentyfive.appcovo2.response.LoginRes;
+import twentyfive.appcovo2.response.ResponseWrapper;
 
 @RestController
-@RequestMapping("/api")
-public class FeRequestController {
+@RequestMapping("/keycloak")
+public class FeRequestController extends BaseController {
 
     @Autowired
     private FeRequestService feRequestService;
@@ -19,15 +22,20 @@ public class FeRequestController {
     private KeycloakService keycloakService;
 
     @PostMapping("/register")
-    public ResponseEntity<Void> registerPlayer(@RequestBody RegistrationRequest registrationRequest) {
+    public ResponseEntity<ResponseWrapper<Void>> registerPlayer(@RequestBody RegistrationRequest registrationRequest) {
         feRequestService.registerPlayer(registrationRequest);
-        return ResponseEntity.noContent().build();
+        return created("User Created Succesfully");
     }
 
-    @PostMapping("/token")
-    public ResponseEntity<String> getToken(@RequestBody LoginRequest loginRequest) {
-        String token = feRequestService.getTokenLogin(loginRequest);
-        return ResponseEntity.ok(token);
+    @PostMapping("/login")
+    public ResponseEntity<ResponseWrapper<LoginRes>> getToken(@RequestBody LoginRequest loginRequest) {
+        return ok(feRequestService.getTokenLogin(loginRequest), "Login successful");
+    }
+
+
+    @GetMapping("/egg")
+    public ResponseEntity<String> getEgg() {
+        return new ResponseEntity<>("sciao belo", HttpStatus.FOUND);
     }
 
     @GetMapping("/prova")

@@ -11,6 +11,8 @@ import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.oauth2.jwt.Jwt;
 import org.springframework.security.oauth2.server.resource.authentication.JwtAuthenticationConverter;
 import org.springframework.security.web.SecurityFilterChain;
+import org.springframework.web.bind.annotation.CrossOrigin;
+
 import java.util.Collection;
 import java.util.List;
 import java.util.Map;
@@ -28,7 +30,7 @@ public class SecurityConfig {
                 .csrf(csrf -> csrf.disable()) // Disabilita CSRF (tipico per API stateless)
                 .authorizeHttpRequests(auth -> auth
 
-                        .requestMatchers("/api/register", "/api/token").permitAll()
+                        .requestMatchers("/keycloak/register", "/keycloak/login", "/keycloak/egg").permitAll()
 
                         .requestMatchers("/test/**").denyAll()
                         // Tutte le altre richieste richiedono l'autenticazione OAuth2

@@ -10,6 +10,7 @@ import twentyfive.appcovo2.models.Player;
 import twentyfive.appcovo2.models.Shop;
 import twentyfive.appcovo2.requests.LoginRequest;
 import twentyfive.appcovo2.requests.RegistrationRequest;
+import twentyfive.appcovo2.response.LoginRes;
 import twentyfive.appcovo2.services.PlayerService;
 import twentyfive.appcovo2.services.ShopService;
 
@@ -116,7 +117,7 @@ public class FeRequestService {
         }
     }
 
-    public String getTokenLogin(LoginRequest loginRequest) {
+    public LoginRes getTokenLogin(LoginRequest loginRequest) {
         return keycloakService.getTokenLogin(loginRequest);
     }
 }

@@ -71,13 +71,13 @@ public class KeycloakService {
     }
 
 
-    public String getTokenLogin(LoginRequest loginRequest) {
+    public LoginRes getTokenLogin(LoginRequest loginRequest) {
         LoginRes res = keycloak.getToken(loginRequest.getUsername(), loginRequest.getPassword());
         String access = res != null ? res.getAccessToken() : null;
         if (access == null || access.isBlank()) {
             throw new TokenRetrievalException("Unable to retrieve admin access token from Keycloak");
         }
-        return "Bearer " + access;
+        return res;
     }
 
     public void resetPasswordFromEmail(String email) {
